@@ -21,7 +21,7 @@
       class="elevation-1"
     >
       <template v-slot:item.actions="">
-        <v-icon small class="mr-2">
+        <!-- <v-icon small class="mr-2">
           mdi-view-compact-outline
         </v-icon>
         <v-icon small class="mr-2">
@@ -29,7 +29,7 @@
         </v-icon>
         <v-icon small class="mr-2">
           mdi-pencil-outline
-        </v-icon>
+        </v-icon> -->
       </template>
     </v-data-table>
     
