@@ -1,16 +1,18 @@
 <template>
+  <div>
+  <p>Главная</p>
+  <import-data></import-data>
 
-  <cable-search></cable-search>
-  
+  </div>
 </template>
 
 <script>
 
-import CableSearch from '../components/cables/CableSearch';
+import ImportData from '../components/ImportData';
 
 export default {
   components: {
-    CableSearch
+    ImportData
   }
 }
 

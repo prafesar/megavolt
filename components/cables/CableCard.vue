@@ -1,11 +1,9 @@
 <template>
   <v-card>
     <v-card-title>{{title}}</v-card-title>
-    <v-card-subtitle>
-      {{`Ф${cable.fider.number} → ${cable.fider.station} → ${cable.fider.location}`}}
-    </v-card-subtitle>
+
     <v-card-text>
-      {{cable.description}}
+      <nuxt-link v-bind:to="'/cables/' + key"> more...</nuxt-link>
     </v-card-text>
   </v-card>
 </template>
@@ -14,7 +12,9 @@
 import { CableService } from '../services';
 
 export default {
-  props: ['id'],
+  props: {
+    key: Number,
+  },
   
   data() {
     return {
@@ -24,9 +24,12 @@ export default {
 
   created() {
     CableService
-      .getCableById(id)
+      .getCableById(params.id || this.key || 3)
+      .then(() => console.log('read data for card'))
       .then(result => this.cable = result)
   },
+
+
 
 }
 </script>

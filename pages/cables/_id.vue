@@ -1,17 +1,17 @@
 
 <template>
 
-  <cable-search></cable-search>
+  <cable-card :id='params'></cable-card>
   
 </template>
 
 <script>
 
-import CableSearch from '../../components/cables/CableSearch';
+import CableCard from '../../components/cables/CableCard';
 
 export default {
   components: {
-    CableSearch
+    CableCard
   }
 }
 

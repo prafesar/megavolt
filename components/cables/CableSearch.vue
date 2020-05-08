@@ -1,80 +1,68 @@
 <template>
-
-  <v-card>
-    <v-card-title>
-      Кабельные линии
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        name="search"
-        id="search"
-        append-icon="mdi-magnify"
-        label="Поиск"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="cables"
-      :search="search"
-      class="elevation-1"
+  <v-container fluid>
+    <v-data-iterator
+      :items="items"
+      :items-per-page.sync="itemsPerPage"
+      hide-default-footer
     >
-      <template v-slot:item.actions="">
-        <!-- <v-icon small class="mr-2">
-          mdi-view-compact-outline
-        </v-icon>
-        <v-icon small class="mr-2">
-          mdi-format-list-bulleted
-        </v-icon>
-        <v-icon small class="mr-2">
-          mdi-pencil-outline
-        </v-icon> -->
+      <template v-slot:header>
+        <v-toolbar
+          class="mb-2"
+          color="indigo darken-5"
+          dark
+          flat
+        >
+          <v-toolbar-title>This is a header</v-toolbar-title>
+        </v-toolbar>
       </template>
-    </v-data-table>
-    
-  </v-card>
 
+      <template v-slot:default>
+        <v-row>
+          <v-col
+            
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <cable-card 
+              v-for="item in items"
+              :key="item.id"
+            >
+            </cable-card>
+
+          </v-col>
+        </v-row>
+      </template>
+
+
+    </v-data-iterator>
+  </v-container>
 </template>
 
 <script>
-
+import CableCard from './CableCard';
 import { CableService } from '../services';
 
 export default {
+  components: {
+    CableCard,
+  },
+  
   data() {
     return {
-      search: '',
-        headers: [
-          {
-            text: 'Наименование',
-            align: 'left',
-            sortable: false,
-            value: 'title',
-          },
-          { text: 'Фидер', value: `fider`, align: 'left' },
-          { text: 'Действия', value: 'actions', align: 'left', sortable: false },
-
-        ],
-        cables: []
+      itemsPerPage: 4,
+      items: [],
     }
   },
   
   created() {
     CableService
       .getAllCables()
-      .then(result => this.cables = result
-        .map(({ fider: { number, station, location }, title }) => ({
-          fider: `Ф${number} → ${station} → ${location}`, 
-          title,
-        })))
+      .then(result => this.items = result.slice(3, 7))
+      .then(() => console.log('read the data'))
   },
 
-  methods: {
-    cableClick() {
-      console.log('click');
-    }
-  }
 }
 </script>
 
