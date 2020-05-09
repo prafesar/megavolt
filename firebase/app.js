@@ -1,5 +1,9 @@
-import app from 'firebase/app';
-import 'firebase/firestore';
+import Firebase from 'firebase/app';
+// import credentials from './credentials';
+
+// if (!Firebase.length) {
+
+// }
 
 const config = {
   apiKey: "AIzaSyDKlaYNqMPxCFplgnHpOJo1IGsUrlf5VWM",
@@ -12,8 +16,4 @@ const config = {
   measurementId: "G-NNTN0KPFP9"
 };
 
-if (!app.length) {
-  app.initializeApp(config);
-}
-
-export default app.firestore(app);
+export default !Firebase.length ? Firebase.initializeApp(config) : Firebase;

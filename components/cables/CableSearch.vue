@@ -1,5 +1,6 @@
 <template>
-  <v-container fluid>
+<p>Hello</p>
+  <!-- <v-container fluid>
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
@@ -19,13 +20,13 @@
       <template v-slot:default>
         <v-row>
           <v-col
-            
+
             cols="12"
             sm="6"
             md="4"
             lg="3"
           >
-            <cable-card 
+            <cable-card
               v-for="item in items"
               :key="item.id"
             >
@@ -37,30 +38,29 @@
 
 
     </v-data-iterator>
-  </v-container>
+  </v-container> -->
 </template>
 
 <script>
-import CableCard from './CableCard';
-import { CableService } from '../services';
+// import CableCard from './CableCard';
+import DB from '../../firebase/db';
 
 export default {
-  components: {
-    CableCard,
-  },
-  
+  // components: {
+  //   CableCard,
+  // },
+
   data() {
     return {
       itemsPerPage: 4,
       items: [],
     }
   },
-  
+
   created() {
-    CableService
-      .getAllCables()
-      .then(result => this.items = result.slice(3, 7))
-      .then(() => console.log('read the data'))
+    DB.collection('cables')
+      // .doc('00Tq228I1TqhIerUbG8E')
+      .then(() => console.log('get cables'))
   },
 
 }

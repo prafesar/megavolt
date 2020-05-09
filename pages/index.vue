@@ -8,7 +8,7 @@
 
 <script>
 
-import CableSearch from '../components/CableSearch';
+import CableSearch from '../components/cables/CableSearch';
 
 export default {
   components: {
