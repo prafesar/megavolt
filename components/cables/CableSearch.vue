@@ -59,7 +59,8 @@ export default {
 
   created() {
     DB.collection('cables')
-      // .doc('00Tq228I1TqhIerUbG8E')
+      .doc('00Tq228I1TqhIerUbG8E')
+      .get()
       .then(() => console.log('get cables'))
   },
 
