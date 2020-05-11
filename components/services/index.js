@@ -1,4 +1,4 @@
-import CableService from './CableServiceLocal';
+import CableService from './CableServiceFirebase';
 
 export {
   CableService

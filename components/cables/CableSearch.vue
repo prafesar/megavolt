@@ -1,68 +1,32 @@
 <template>
-<p>Hello</p>
-  <!-- <v-container fluid>
-    <v-data-iterator
-      :items="items"
-      :items-per-page.sync="itemsPerPage"
-      hide-default-footer
-    >
-      <template v-slot:header>
-        <v-toolbar
-          class="mb-2"
-          color="indigo darken-5"
-          dark
-          flat
-        >
-          <v-toolbar-title>This is a header</v-toolbar-title>
-        </v-toolbar>
-      </template>
-
-      <template v-slot:default>
-        <v-row>
-          <v-col
-
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <cable-card
-              v-for="item in items"
-              :key="item.id"
-            >
-            </cable-card>
-
-          </v-col>
-        </v-row>
-      </template>
-
-
-    </v-data-iterator>
-  </v-container> -->
+  <div>
+    <p>Cable Search</p>
+    <p v-for="cable in cables" :key="cable.id">{{cable.title}}</p>
+  </div>
 </template>
 
 <script>
-// import CableCard from './CableCard';
-import DB from '../../firebase/db';
+import CableCard from '~/components/cables/CableCard';
+import { CableService } from '~/components/services';
 
 export default {
-  // components: {
-  //   CableCard,
-  // },
 
   data() {
     return {
-      itemsPerPage: 4,
-      items: [],
+      fider: 102,
+      limit: 10,
+      cables: [],
     }
   },
 
   created() {
-    DB.collection('cables')
-      .doc('00Tq228I1TqhIerUbG8E')
-      .get()
-      .then(() => console.log('get cables'))
-  },
+    CableService
+      .getCables({
+        fider: this.fider,
+        limit: this.limit,
+      })
+      .then(cables => this.cables = cables)
+  }
 
 }
 </script>
