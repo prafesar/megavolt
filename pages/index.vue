@@ -1,9 +1,5 @@
 <template>
-  <div>
-  <p>Главная</p>
   <cable-search></cable-search>
-
-  </div>
 </template>
 
 <script>

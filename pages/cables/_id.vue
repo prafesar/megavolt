@@ -1,7 +1,7 @@
 
 <template>
 
-  <cable-card :id='params'></cable-card>
+  <cable-card :id='$route.params.id'></cable-card>
   
 </template>
 
@@ -12,7 +12,8 @@ import CableCard from '../../components/cables/CableCard';
 export default {
   components: {
     CableCard
-  }
+  },
+
 }
 
 </script>
