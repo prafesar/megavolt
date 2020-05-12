@@ -5,7 +5,7 @@ export default {
   getCablesByFiderNumber: async (fider) => {
     const snap = await db.collection('cables')
       .where('fider.number', '==', fider)
-      .get();
+      .get()
     
     return snap.docs.map((doc) => ({
       ...doc.data(), id: doc.id
