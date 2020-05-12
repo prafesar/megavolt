@@ -26,30 +26,18 @@
         >
           <v-expansion-panel-header>{{cable.title}}</v-expansion-panel-header>
           <v-expansion-panel-content >
-            <v-card>
-              
-                <v-card-subtitle>{{cable.fider.team}} → Ф{{cable.fider.number}} → ПС {{cable.fider.station}} {{cable.fider.section}}СШ</v-card-subtitle>
-               
-                <v-card-text>Год: {{cable.year ? cable.year : 'неизвестно'}} <br>
-                Возраст: {{cable.year ? 2020 - cable.year : 'неизвестно'}} <br>
-                Длинна: {{cable.length ? cable.length : 'неизвестно'}}, км <br>
-                Балланс: {{cable.owner}} <br>
-                Описание: {{cable.description}}</v-card-text>
-               
-              <v-card-actions>
-                <!-- <nuxt-link to="cables/:id">...карточка</nuxt-link> -->
-              </v-card-actions>
-            
-            </v-card>
+            <cable-card v-bind="cable"></cable-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+
   </v-card>
 </template>
 
 <script>
 
 import { CableService } from '~/components/services';
+import { CableCard } from './CableCard';
 
 export default {
 
@@ -58,6 +46,10 @@ export default {
       searchByFider: null,
       cables: [],
     }
+  },
+
+  components: {
+    CableCard
   },
 
   methods: {
@@ -71,7 +63,6 @@ export default {
       this.$router.push(`/cables/${id}`)
     },
   },
-
 
 }
 </script>

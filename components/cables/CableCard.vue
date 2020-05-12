@@ -1,45 +1,31 @@
 <template>
-  <v-card
-    color="grey lighten-4"
-    flat
-    height="200px"
-    tile
-  >
-    <v-card-title>{{cable.title}}</v-card-title>
-    <v-card-subtitle>Ф{{fider.number}} {{fider.team}} ПС-{{fider.station}} {{fider.section}}СШ</v-card-subtitle>
-    <v-card-text>{{cable.description}}</v-card-text>
-
+  <v-card class="my-4">
+    
+    <v-card-title>{{title}}</v-card-title>
+    <v-card-subtitle>{{fider.team}} → Ф{{fider.number}} → ПС {{fider.station}} {{fider.section}}СШ</v-card-subtitle>
+    
+    <v-card-text>Год: {{year ? year : 'неизвестно'}} <br>
+    Возраст: {{year ? 2020 - year : 'неизвестно'}} <br>
+    Длинна: {{length ? length : 'неизвестно'}}, км <br>
+    Балланс: {{owner}} <br>
+    Описание: {{description}}</v-card-text>
+    
   </v-card>
-
 </template>
 
 <script>
 
-import { CableService } from '~/components/services';
-
 export default {
- 
   data() {
-    return {
-      cable: {},
-      fider: {},
-    }
+    return {}
   },
-
+  
   props: {
-    id: {
-      type: String,
-    }
-  },
-
- 
-  created() {
-    CableService
-      .getCablebyId(this.id)
-      .then(cable => {
-        this.cable = cable;
-        this.fider = cable.fider;
-      })
+    title: String,
+    year: Number,
+    length: [Number, String],
+    description: String,
+    fider: Object,
   },
 
 }
