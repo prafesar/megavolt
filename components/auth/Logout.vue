@@ -2,8 +2,12 @@
 
 <div>
 
-    <v-btn @click.prevent="login" v-if="!user">LogIn</v-btn>
-    <v-btn @click.prevent="logout" v-else>LogOut</v-btn>
+    <v-btn @click.prevent="login" v-if="!user" text >
+      <v-icon left>mdi-login</v-icon>LogIn
+    </v-btn>
+    <v-btn @click.prevent="logout" v-else text >
+      <v-icon left>mdi-logout</v-icon>LogOut
+    </v-btn>
 
 </div>
 

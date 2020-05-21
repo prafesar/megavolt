@@ -7,20 +7,28 @@
   >
     <v-toolbar-title>Регистрация</v-toolbar-title>
   </v-toolbar>
-  
   <v-card-text>
+  <v-card>
+    <v-card-text v-for="error in errors" :key="error">
+      {{error}}
+    </v-card-text>
+  </v-card>
     <v-form>
       <v-text-field
         v-model="email"
         label="Email"
-        name="email"
         type="email"
       ></v-text-field>
 
       <v-text-field
-        id="password"
+        v-model="password"
         label="Password"
-        name="password"
+        type="password"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="confirmPassword"
+        label="Confirm Password"
         type="password"
       ></v-text-field>
 
@@ -28,7 +36,9 @@
   </v-card-text>
   <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn color="primary">Зарегистрироваться</v-btn>
+    <v-btn
+      @click="submit"
+      color="primary">Зарегистрироваться</v-btn>
   </v-card-actions>
 </v-card>
 </template>
@@ -52,9 +62,9 @@ export default {
       if (!validate.email(this.email)) {
         this.errors.push('Please enter a valid email address');
       }
-      if (!validate.password(this.password)) {
-        this.errors.push('Your password is not strong enough!');
-      }
+      // if (!validate.password(this.password)) {
+      //   this.errors.push('Your password is not strong enough!');
+      // }
       if (this.password !== this.confirmPassword) {
         this.errors.push('Password do not match');
       }

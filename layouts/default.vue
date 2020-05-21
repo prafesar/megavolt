@@ -16,12 +16,12 @@
           >
             <v-app-bar app primary>
               <v-toolbar-title>
-                MegaVolt
+                <nuxt-link to="/">MegaVolt</nuxt-link>
               </v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-toolbar-items>
+         
                 <logout></logout>
-              </v-toolbar-items>
+           
             </v-app-bar>
             <nuxt />
           </v-col>

@@ -35,6 +35,7 @@
     </v-form>
   </v-card-text>
   <v-card-actions>
+    <nuxt-link to="register">Регистрация</nuxt-link>
     <v-spacer></v-spacer>
     <v-btn @click="login" class="primary">Войти</v-btn>
   </v-card-actions>
@@ -63,7 +64,7 @@ export default {
       if (!this.errors.length) {
         event.target.classList.add('was-validated');
         Auth.signInWithEmailAndPassword(this.email, this.password)
-          .then(() => this.$router.push('/dashboard'))
+          .then(() => this.$router.push('/cables'))
           .catch(err => this.errors.push(err.message));
       }
     },

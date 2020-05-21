@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
     </v-toolbar>
 
-    <v-text-field
+    <!-- <v-text-field
       label="Поиск"
       v-model="search"
       clearable
@@ -20,7 +20,7 @@
     </v-text-field>
     <v-card-text>
       <p v-for="cable in cables" :key="cable.key">{{cable.title}}</p>
-    </v-card-text>
+    </v-card-text> -->
 
   </v-card>
 </template>
@@ -31,25 +31,25 @@ import _ from 'lodash';
 import { CableService } from '~/components/services';
 
 export default {
-  computed: {
-    cables() {
-      return this.$store.state.cables.getAllCables
-    },
-  },
+  // computed: {
+  //   cables() {
+  //     return this.$store.state.cables.getAllCables
+  //   },
+  // },
   
-  created() {
-    return CableService
-        .getAllCables()
-        .then(cables => this.$store.commit('setCablesMutation', cables))
-  },
+  // created() {
+  //   return CableService
+  //       .getAllCables()
+  //       .then(cables => this.$store.commit('setCablesMutation', cables))
+  // },
 
-  methods: {
-    getFiltredCableList() {
-      return CableService
-        .getCablesByFiderNumber(this.searchByFider)
-        .then(cables => this.cables = cables)
-    },
-  }
+  // methods: {
+  //   getFiltredCableList() {
+  //     return CableService
+  //       .getCablesByFiderNumber(this.searchByFider)
+  //       .then(cables => this.cables = cables)
+  //   },
+  // }
 
 }
 </script>
