@@ -2,6 +2,16 @@ import db from '~/firebase/db';
 
 export default {
 
+  getAllCables: async (fider) => {
+    const snap = await db.collection('cables')
+      .limit(50)
+      .get()
+    
+    return snap.docs.map((doc) => ({
+      ...doc.data(), id: doc.id
+    }));     
+  },
+
   getCablesByFiderNumber: async (fider) => {
     const snap = await db.collection('cables')
       .where('fider.number', '==', fider)

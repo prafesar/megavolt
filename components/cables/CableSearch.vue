@@ -11,58 +11,45 @@
     </v-toolbar>
 
     <v-text-field
-      label="Поиск по фидеру"
-      v-model.number="searchByFider"
+      label="Поиск"
+      v-model="search"
       clearable
       class="display-1 mx-12 mt-6"
-      @keyup.enter="getCableList"
+      @keyup.enter="getFiltredCableList"
     >
     </v-text-field>
-
-      <v-expansion-panels accordion focusable>
-        <v-expansion-panel
-          v-for="cable in cables"
-          :key="cable.id"
-        >
-          <v-expansion-panel-header>{{cable.title}}</v-expansion-panel-header>
-          <v-expansion-panel-content >
-            <cable-card v-bind="cable"></cable-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+    <v-card-text>
+      <p v-for="cable in cables" :key="cable.key">{{cable.title}}</p>
+    </v-card-text>
 
   </v-card>
 </template>
 
 <script>
 
+import _ from 'lodash';
 import { CableService } from '~/components/services';
-import { CableCard } from './CableCard';
 
 export default {
-
-  data() {
-    return {
-      searchByFider: null,
-      cables: [],
-    }
+  computed: {
+    cables() {
+      return this.$store.state.cables.getAllCables
+    },
   },
-
-  components: {
-    CableCard
+  
+  created() {
+    return CableService
+        .getAllCables()
+        .then(cables => this.$store.commit('setCablesMutation', cables))
   },
 
   methods: {
-    getCableList() {
+    getFiltredCableList() {
       return CableService
         .getCablesByFiderNumber(this.searchByFider)
         .then(cables => this.cables = cables)
     },
-
-    openCableCard(id) {
-      this.$router.push(`/cables/${id}`)
-    },
-  },
+  }
 
 }
 </script>

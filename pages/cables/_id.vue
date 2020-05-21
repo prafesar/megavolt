@@ -13,6 +13,8 @@ export default {
   components: {
     CableCard
   },
+  
+  // first: get data by cable id, then send to CableCard
 
 }
 

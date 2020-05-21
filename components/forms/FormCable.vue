@@ -1,17 +1,8 @@
 <template>
 <div>
+  <cable-card v-bind="cable"></cable-card>
+  
   <v-card>
-      <v-card-title>{{cable.title}}</v-card-title>
-      <v-card-subtitle>{{cable.fider.team}} → Ф{{cable.fider.number}} → ПС {{cable.fider.station}} {{cable.fider.section}}СШ</v-card-subtitle>
-      
-      <v-card-text>Год: {{cable.year ? cable.year : 'неизвестно'}} <br>
-      Возраст: {{cable.year ? 2020 - cable.year : 'неизвестно'}} <br>
-      Длинна: {{cable.length ? cable.length : 'неизвестно'}}, км <br>
-      Балланс: {{cable.owner}} <br>
-      Описание: {{cable.description}}</v-card-text>
-  </v-card>
-  <v-card>
-
     <div class="text-xs-center">
       <v-dialog
         v-model="dialog"
@@ -62,6 +53,7 @@
 <script>
 
 import { CableService } from '~/components/services';
+import CableCard from './CableCard';
 
 export default {
  
@@ -71,6 +63,10 @@ export default {
       fider: {},
       dialog: false
     }
+  },
+
+  components: {
+    CableCard
   },
 
   props: {
