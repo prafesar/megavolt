@@ -52,7 +52,7 @@
 
 <script>
 
-import { CableService } from '~/components/services';
+
 import CableCard from './CableCard';
 
 export default {

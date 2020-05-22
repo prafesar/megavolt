@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "algoliasearch": "^4.2.0",
     "firebase": "^7.14.3",
+    "instantsearch.css": "^7.4.2",
     "lodash": "^4.17.15",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vue-instantsearch": "^2.7.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",

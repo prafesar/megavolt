@@ -28,9 +28,13 @@
 <script>
 
 import _ from 'lodash';
-import { CableService } from '~/components/services';
+import { CableService } from '~/services';
 
 export default {
+  data() {
+    return 
+  },
+  
   // computed: {
   //   cables() {
   //     return this.$store.state.cables.getAllCables

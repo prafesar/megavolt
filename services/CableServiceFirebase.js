@@ -2,14 +2,20 @@ import db from '~/firebase/db';
 
 export default {
 
-  getAllCables: async (fider) => {
+  getCableList: async (fider) => {
     const snap = await db.collection('cables')
       .limit(50)
       .get()
     
-    return snap.docs.map((doc) => ({
-      ...doc.data(), id: doc.id
-    }));     
+    console.log('firebase got request for cables')
+    
+    return snap.docs
+      .map((doc) => ({
+        ...doc.data(), id: doc.id
+      }))
+      .map(({ id, title, fider: { number, team }}) => (
+        { id, title: `${team} ${number}: ${title}`}
+      ));     
   },
 
   getCablesByFiderNumber: async (fider) => {

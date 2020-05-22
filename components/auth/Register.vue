@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import Auth from '@/firebase/auth';
-import validate from '../services/validation-module';
+import Auth from '~/firebase/auth';
+import validate from '~/services/validation-module';
 
 export default {
   data() {
