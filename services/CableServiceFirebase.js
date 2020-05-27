@@ -5,7 +5,6 @@ export default {
   getCableList: async () => {
     try {
       const snap = await db.collection('cables')
-        .limit(10)
         .get();
       
         const docs = snap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
