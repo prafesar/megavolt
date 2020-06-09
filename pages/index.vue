@@ -33,10 +33,10 @@ export default {
 /*
 * TODO: fix nuxt generate error, cause 'fetch'
 */
-  fetch({ store, error }) {
-    return store.dispatch('cables/fetchCableList')
-      .catch(() => console.log('dispatch error'))
-  },
+  // fetch({ store, error }) {
+  //   return store.dispatch('cables/fetchCableList')
+  //     .catch(() => console.log('dispatch error'))
+  // },
 
   methods: {
     onSearch() {
