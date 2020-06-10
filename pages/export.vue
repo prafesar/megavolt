@@ -35,8 +35,9 @@ export default {
           .map(item => item.trim().replace("'", ""));
         const tags = titleTags.concat(fiderTags).filter(item => item !== '→');
         const year = cablesData.find(item => item.key === key).calculated.year;
-        console.log('updating cable data: ' + year)
-        return ref.set({ tags: tags, year: year }, { merge: true })
+        console.log('updating cable data: ' + year);
+        ref.set({ tags: tags, year: year }, { merge: true });
+        return;
       })
     }
   }

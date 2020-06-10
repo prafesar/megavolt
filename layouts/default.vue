@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-content>
       <v-container
-        class="fill-height"
+        
         fluid
       >
         <v-row
@@ -19,7 +19,7 @@
                 <nuxt-link to="/">MegaVolt</nuxt-link>
               </v-toolbar-title>
               <v-spacer></v-spacer>
-         
+                <nuxt-link to='/cables'>КЛ</nuxt-link>
                 <logout></logout>
            
             </v-app-bar>
