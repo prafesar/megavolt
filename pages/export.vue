@@ -1,12 +1,16 @@
 <template>
   <div>
     <v-btn
+      v-if="pageStatus"
       my-8
-      @click.prevent="testCableColl"
+      @click.prevent="getList"
     >
-      testCableColl
+      Get List
     </v-btn>
-
+    <div v-else>
+      <p v-for="err of errors" :key="err"> {{err}} </p>
+    </div>
+    <p v-for="c of cables" :key="c.id"> {{c.id}} </p>
   </div>
 </template>
 
@@ -16,11 +20,10 @@ import db from '~/firebase/db';
 import _ from 'lodash';
 
 /*
-* result like { id, ref, ...data }
+* return { id, ref, ...data }
 */
 function getDataFromCableColl() {
   return db.collectionGroup('cables')
-    .limit(1340)
     .get()
     .then(snap => snap.docs.map(doc => {
       if (doc.exists) {
@@ -29,7 +32,32 @@ function getDataFromCableColl() {
     }))
 }
 
+function getCableTagList() {
+  return getDataFromCableColl()
+    .then(result => result.map(
+      ({ id, tags }) => ({ id, tags })
+    ))
+}
+
+function printCableTagList() {
+  return getCableTagList()
+    .then(cables => cables.map(
+      curr => `${JSON.stringify(curr)},`
+    ))
+    .then(res => console.log(
+      `[\n${res.join('\n')}\n]`
+    ))
+}
+
 export default {
+  data() {
+    return {
+      pageStatus: true,
+      errors: [],
+      cableCount: 0,
+      cables: []
+    }
+  },
   methods: {
     async setCableTags() {
       const cables = await getDataFromCableColl();
@@ -45,15 +73,18 @@ export default {
         return;
       })
     },
-    async testCableColl() {
-      const cables = await db.collectionGroup('cables')
-        .where('fider', 'in', ['undefined', null])
-        .get()
-        .then(snap => snap.docs.map(doc => {
-          return ({ id: doc.id, ...doc.data()})
-        }))
-
-      cables.forEach(item => console.log(item.id))
+    printList() {
+      printCableTagList();
+    },
+    async saveList() {
+      const list = await getCableTagList();
+      db.collection('cash').doc('cable-list').set({ data: list });
+      console.log('i import cable list in cash')
+      return;
+    },
+    getList() {
+      db.collection('cash').doc('cable-list').get()
+        .then(res => this.cables = res.data().data)
     }
 
   }
