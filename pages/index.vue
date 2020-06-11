@@ -1,19 +1,14 @@
 <template>
-  <nuxt-link to='/cables/'>Поиск КЛ</nuxt-link>
+  <cable-search></cable-search>
 </template>
 
 <script>
+import CableSearch from '@/components/cables/CableSearch';
 
 export default {
-  data() {
-   
-  },
+  components: {
+    CableSearch
+  }
 }
+
 </script>
-
-<style>
-
-</style>
-
-
-
