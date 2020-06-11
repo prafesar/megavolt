@@ -10,22 +10,7 @@ const db = admin.firestore();
 // https://us-central1-prafesar-labs.cloudfunctions.net/setCableList
 
 exports.setCableList = functions.https.onRequest((request, response) => {
-  
-  const docs = db.collection('cables')
-    .get()
-    .docs
-    .map((doc) => ({ ...doc.data(), id: doc.id }))
-    .catch(console.error)
-    .map(({ id, title, fider: { number, team } }) => ({
-      id, title: `${team} Ф-${number}: ${title}`
-    }))
-    .catch(console.error);
 
-  db.collection('lists')
-    .add({ type: 'cableList', list: docs })
-    .catch(console.error);
-  
-  return response.send("i made cable list");
 });
 
 exports.setList = functions.https.onRequest((request, response) => {

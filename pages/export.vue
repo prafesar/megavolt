@@ -18,22 +18,10 @@
 
 import db from '~/firebase/db';
 import _ from 'lodash';
-
-/*
-* return { id, ref, ...data }
-*/
-function getDataFromCableColl() {
-  return db.collectionGroup('cables')
-    .get()
-    .then(snap => snap.docs.map(doc => {
-      if (doc.exists) {
-        return ({ ref:doc.ref, id: doc.id, ...doc.data()})
-      }
-    }))
-}
+import CableService from '~/services'
 
 function getCableTagList() {
-  return getDataFromCableColl()
+  return CableService.getDataFromCableColl()
     .then(result => result.map(
       ({ id, tags }) => ({ id, tags })
     ))
@@ -59,32 +47,12 @@ export default {
     }
   },
   methods: {
-    async setCableTags() {
-      const cables = await getDataFromCableColl();
-      
-      cables.forEach(({ ref, key, title, fider }) => {
-        const titleTags = _.words(title.toUpperCase());
-        const fiderTags = fider.toUpperCase().split(' → ')
-          .map(item => item.trim().replace("'", ""));
-        const tags = titleTags.concat(fiderTags).filter(item => item !== '→');
-        const year = cablesData.find(item => item.key === key).calculated.year;
-        console.log('updating cable data: ' + year);
-        ref.set({ tags: tags, year: year }, { merge: true });
-        return;
-      })
-    },
+
     printList() {
       printCableTagList();
     },
-    async saveList() {
-      const list = await getCableTagList();
-      db.collection('cash').doc('cable-list').set({ data: list });
-      console.log('i import cable list in cash')
-      return;
-    },
     getList() {
-      db.collection('cash').doc('cable-list').get()
-        .then(res => this.cables = res.data().data)
+      return CableService.getCableTagList();
     }
 
   }
