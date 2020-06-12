@@ -3,7 +3,7 @@
     <v-btn
       v-if="pageStatus"
       my-8
-      @click.prevent="getList"
+      @click.prevent=""
     >
       Get List
     </v-btn>
@@ -20,23 +20,6 @@ import db from '~/firebase/db';
 import _ from 'lodash';
 import CableService from '~/services'
 
-function getCableTagList() {
-  return CableService.getDataFromCableColl()
-    .then(result => result.map(
-      ({ id, tags }) => ({ id, tags })
-    ))
-}
-
-function printCableTagList() {
-  return getCableTagList()
-    .then(cables => cables.map(
-      curr => `${JSON.stringify(curr)},`
-    ))
-    .then(res => console.log(
-      `[\n${res.join('\n')}\n]`
-    ))
-}
-
 export default {
   data() {
     return {
@@ -48,12 +31,6 @@ export default {
   },
   methods: {
 
-    printList() {
-      printCableTagList();
-    },
-    getList() {
-      return CableService.getCableTagList();
-    }
 
   }
 }
