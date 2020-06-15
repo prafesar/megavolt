@@ -14,10 +14,16 @@ function printArrayOfItems(promise) {
 
 export default {
   getCableList: function () {
-    // call http function createCableCollCash
+    // call http function https://us-central1-prafesar-labs.cloudfunctions.net/setCableList
+  },
+  getCableListBySearch: function (search) {
+    // call with params 
+    // https://us-central1-prafesar-labs.cloudfunctions.net/getCableListBySearch?search="Ф102"
   },
   getCableById: function (cableId) {
-
+    return collCableRef.doc(cableId)
+      .get()
+      .then(snapDoc => ({ ref: snapDoc.ref, id: snapDoc.id, ...snapDoc.data() }))
   },
   createCable: function () {
     
