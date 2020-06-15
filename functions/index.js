@@ -1,64 +1,67 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const _ = require('lodash');
 
 admin.initializeApp();
 const db = admin.firestore();
 
-const collCableRef = db.collectionGroup('cables');
-const cableCashRef = db.doc('cash/cable-list');
+const cableCollectionRef = db.collectionGroup('cables');
+const cableListRef = db.doc('cash/cable-list');
 
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
-// https://us-central1-prafesar-labs.cloudfunctions.net/setCableList
-
-const cableService = {
-  getDataFromCableColl: async function (collRef = collCableRef) {
-    const collSnap = await collRef.get();
-    
-      return collSnap.docs.map(doc => {
-      if (doc.exists) {
-        return ({ ref: doc.ref, id: doc.id, ...doc.data() });
-      }
-    });
+const cableUtilits = {
+  getAllCables: async function () {
+    const collSnap = await cableCollectionRef
+      .get();
+    return collSnap.docs
+      .filter(doc => doc.exists)
+      .map(doc => ({ ref: doc.ref, id: doc.id, ...doc.data() }))
   },
-  createCableCollCash: function () { // read all cables and create db-cash <promise>
-    return getDataFromCableColl()
-      .then(result => cableCashRef.set({ cash: result }))
+  updateCableList: function () { // read all cables and create db-cash <promise>
+    return getAllCables()
+      .then(result => cableListRef.set({ cash: result }))
   },
-  getCableCollCash: async function (docRef = cableCashRef) { // read from db-cash
-    const res = await docRef.get();
+  getCableList: async function () { // read from db-cash
+    const res = await cableListRef.get();
     return res.data().cash;
   },
   setTagsForEachCable: async function () {
-    const cables = await this.getDataFromCableColl();
-    
+    const cables = await this.getAllCables();
     return cables
       .forEach(({ ref, title, fider }) => {
-        const titleTags = _.words(title.toUpperCase());
-        const fiderTags = fider.toUpperCase().split(' → ')
-          .map(item => item.trim().replace("'", ""));
-        const tags = titleTags.concat(fiderTags).filter(item => item !== '→');
+        const tags = getCableTags(title, fider);
         ref.set({ tags }, { merge: true });
       })
   },
+  getCableTags: function(title, fider) {
+    const titleTags = _.words(title.toUpperCase());
+    const fiderTags = fider.toUpperCase().split(' → ')
+      .map(item => item.trim().replace("'", ""));
+    return titleTags.concat(fiderTags).filter(item => item !== '→');
+  }
 }
 
-exports.setCableList = functions.https.onRequest((request, response) => {
 
-});
+module.exports = {
+  // https://us-central1-prafesar-labs.cloudfunctions.net/setCableList
+  setCableList: functions.https.onRequest((request, response) => {
+    // create cashe cable list
+    return cableUtilits.updateCableList()
+      .then(() => response.send({ result: true }))
+      .catch(() => response.send({ result: false }))
+  }),
 
-exports.setList = functions.https.onRequest((request, response) => {
-  let answer;
-
-  const docs = db.collection('cables').doc('01hCwz9QxEqjHF2uCxbi')
-    .get()
-    .then(res => answer = res.id)
-    .catch(console.error);
-
-  db.collection('lists')
-    .add({ type: 'cableList', id: answer })
-    .catch(console.error);
-  
-  return response.send("i made cable list");
-});
+  getCableListBySearch: functions.https.onRequest((request, response) => {
+    const cables = cableUtilits.getCableList();
+    const searchTags = req.body.search
+      .toUpperCase()
+      .split(' ')
+      .trim();
+    // 3. search cables by tags
+    const result = cables.filter(({ tags }) => _.intersection(tags, searchTags).length !== 0)
+    // 4. return search result
+    return response.send(result);
+  }),
+};
