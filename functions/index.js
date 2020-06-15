@@ -6,7 +6,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 const cableCollectionRef = db.collectionGroup('cables');
-const cableListRef = db.doc('cash/cable-list');
+const cableListRef = db.collection('cash').doc('cable-list');
 
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -19,13 +19,15 @@ const cableUtilits = {
       .filter(doc => doc.exists)
       .map(doc => ({ ref: doc.ref, id: doc.id, ...doc.data() }))
   },
-  updateCableList: function () { // read all cables and create db-cash <promise>
-    return getAllCables()
-      .then(result => cableListRef.set({ cash: result }))
+  updateCableList: async function () { // read all cables and create db-cash <promise>
+    const result = await this.getAllCables();
+    return await cableListRef.set({ cash: result });
   },
   getCableList: async function () { // read from db-cash
-    const res = await cableListRef.get();
-    return res.data().cash;
+    const result = await cableListRef.get()
+      .then(docSnap => docSnap.data())
+      .then(({ cash }) => cash);
+    return result;
   },
   setTagsForEachCable: async function () {
     const cables = await this.getAllCables();
@@ -46,22 +48,33 @@ const cableUtilits = {
 
 module.exports = {
   // https://us-central1-prafesar-labs.cloudfunctions.net/setCableList
-  setCableList: functions.https.onRequest((request, response) => {
+  setCableList: functions.https.onRequest(async (request, response) => {
     // create cashe cable list
-    return cableUtilits.updateCableList()
-      .then(() => response.send({ result: true }))
-      .catch(() => response.send({ result: false }))
+    try {
+      await cableUtilits.updateCableList();
+      response.send({ result: true })
+    } catch (error) {
+      response.send({ result: false, message: error.message })
+    }
+    
   }),
-
-  getCableListBySearch: functions.https.onRequest((request, response) => {
-    const cables = cableUtilits.getCableList();
-    const searchTags = req.body.search
-      .toUpperCase()
-      .split(' ')
-      .trim();
-    // 3. search cables by tags
-    const result = cables.filter(({ tags }) => _.intersection(tags, searchTags).length !== 0)
-    // 4. return search result
-    return response.send(result);
+  // https://us-central1-prafesar-labs.cloudfunctions.net/getCableListBySearch?search="838"
+  getCableListBySearch: functions.https.onRequest(async (request, response) => {
+    const search = request.query.search;
+    const searchTags = _.words(search.toUpperCase());
+    const countSearchTags = searchTags.length;
+    
+    try {
+      const cables = await cableUtilits.getCableList();
+      const result = cables.filter(({ tags }) => {
+        const diff = _.intersection(tags, searchTags);
+        return (diff.length === countSearchTags);
+      });
+        
+      response.send({ result });
+    } catch (error) {
+      response.send({ result: false, message: error.message, status: 'error' });
+    }
+    
   }),
 };
