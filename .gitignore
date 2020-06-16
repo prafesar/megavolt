@@ -68,10 +68,7 @@ typings/
 # nuxt.js build output
 .nuxt
 
-# firebase
-.nuxt
-
-# Nuxt generate
+# firebase generate
 .firebase
 
 # vuepress build output
@@ -91,3 +88,4 @@ sw.*
 
 # Vim swap files
 *.swp
+.firebase/hosting.ZGlzdA.cache
