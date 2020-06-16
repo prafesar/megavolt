@@ -34,8 +34,10 @@
 
 <script>
 
+import axios from 'axios';
 import DB from '~/firebase/db';
 import CableCard from './CableCard';
+const baseUrl = 'https://us-central1-prafesar-labs.cloudfunctions.net';
 
 export default {
   data() {
@@ -57,25 +59,12 @@ export default {
       
       this.loading = true;
       
-      const tag = this.search
-        .toUpperCase()
-        .split(' ')[0]
-        .trim();
-
-        DB.collectionGroup('cables')
-          .where('tags', 'array-contains', tag)
-          .limit(15)
-          .get()
-          .catch(() => {
-            console.error('download snapShot error ' + error.message);
-            throw new Error;
-          })
-          .then(snapQwery => this.searchResult = snapQwery.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-          .catch(() => {
-            console.error('download cable data by search error ' + error.message);
-            throw new Error;
-          })
-          .then(() => this.loading = false)
+      axios
+        .get(`${baseUrl}/getCableListBySearch?search=${this.search}`) // ${this.search}
+        .catch(() => console.log('error read data'))
+        .then(result => this.searchResult = result.data)
+        .then(() => this.loading = false)
+      
     },
   },
 }

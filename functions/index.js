@@ -61,7 +61,9 @@ module.exports = {
   // https://us-central1-prafesar-labs.cloudfunctions.net/getCableListBySearch?search="838"
   getCableListBySearch: functions.https.onRequest(async (request, response) => {
     const search = request.query.search;
-    const searchTags = _.words(search.toUpperCase());
+    const searchTags = search
+      .toUpperCase().split(" ")
+      .map(word => word.trim());
     const countSearchTags = searchTags.length;
     
     try {
@@ -71,9 +73,15 @@ module.exports = {
         return (diff.length === countSearchTags);
       });
         
-      response.send({ result });
+      response
+        .set('Access-Control-Allow-Origin', '*')
+        .status(200)
+        .json(result);
+      
     } catch (error) {
-      response.send({ result: false, message: error.message, status: 'error' });
+      response
+        .status(400)
+        .send({ result: false, message: error.message, status: 'error' });
     }
     
   }),
