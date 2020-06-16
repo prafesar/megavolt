@@ -68,8 +68,11 @@ typings/
 # nuxt.js build output
 .nuxt
 
+# firebase
+.nuxt
+
 # Nuxt generate
-dist
+.firebase
 
 # vuepress build output
 .vuepress/dist
