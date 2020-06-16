@@ -22,12 +22,20 @@
     <v-card-text v-if="!search">Поиск по кабельным линиям ведется по номеру ТП, СР, РП. Для поиска кабельных линий по фидеру, надо перед номером добавить букву Ф. К примеру 'Ф102'</v-card-text>
     <v-card-text v-if="loading">Идет загрузка данных ... </v-card-text>
 
-    <cable-card
+    <v-card
       v-for="cable in searchResult"
       :key="cable.id"
-      v-bind="cable"
-    >
-    </cable-card>
+      class="my-4">
+    
+      <v-card-title>{{cable.title}}</v-card-title>
+      <v-card-subtitle>{{cable.fider}}</v-card-subtitle>
+      
+      <v-card-text>Год: {{cable.year ? cable.year : 'неизвестно'}} <br>
+      Возраст: {{cable.year ? 2020 - cable.year : 'неизвестно'}} <br>
+      Длинна: {{cable.length ? cable.length : 'неизвестно'}} км <br>
+      </v-card-text>
+      
+    </v-card>
 
   </v-card>
 </template>
@@ -36,7 +44,7 @@
 
 import axios from 'axios';
 import DB from '~/firebase/db';
-import CableCard from './CableCard';
+
 const baseUrl = 'https://us-central1-prafesar-labs.cloudfunctions.net';
 
 export default {
@@ -47,9 +55,6 @@ export default {
       loading: false,
     }
   },
-
-  components: { CableCard },
-
   methods: {
     onSearch() {
       if (this.search === '') {
