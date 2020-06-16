@@ -6,7 +6,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 const cableCollectionRef = db.collectionGroup('cables');
-const cableListRef = db.collection('cash').doc('cable-list');
+const cableListRef = db.collection('cashe').doc('cable-list');
 
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -19,14 +19,17 @@ const cableUtilits = {
       .filter(doc => doc.exists)
       .map(doc => ({ ref: doc.ref, id: doc.id, ...doc.data() }))
   },
-  updateCableList: async function () { // read all cables and create db-cash <promise>
+  createCableList: async function () { // read all cables and create db-cash <promise>
     const result = await this.getAllCables();
-    return await cableListRef.set({ cash: result });
+    return await cableListRef.set({ cashe: result });
+  },
+  updateCableList: function(cableData) { // call when cable.onChange
+
   },
   getCableList: async function () { // read from db-cash
     const result = await cableListRef.get()
       .then(docSnap => docSnap.data())
-      .then(({ cash }) => cash);
+      .then(({ cashe }) => cashe);
     return result;
   },
   setTagsForEachCable: async function () {
@@ -51,12 +54,11 @@ module.exports = {
   setCableList: functions.https.onRequest(async (request, response) => {
     // create cashe cable list
     try {
-      await cableUtilits.updateCableList();
+      await cableUtilits.createCableList();
       response.send({ result: true })
     } catch (error) {
       response.send({ result: false, message: error.message })
     }
-    
   }),
   // https://us-central1-prafesar-labs.cloudfunctions.net/getCableListBySearch?search="838"
   getCableListBySearch: functions.https.onRequest(async (request, response) => {
