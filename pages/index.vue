@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CableSearch from '@/components/cables/CableSearch';
+import CableSearch from '~/components/cables/CableSearch';
 
 export default {
   components: {

@@ -9,7 +9,8 @@ import LogIn from '@/components/auth/LogIn';
 export default {
   components: {
     LogIn
-  }
+  },
+  layout: 'auth',
 }
 
 </script>

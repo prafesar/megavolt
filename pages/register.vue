@@ -9,7 +9,8 @@ import Register from '@/components/auth/Register';
 export default {
   components: {
     Register
-  }
+  },
+  layout: 'auth',
 }
 
 </script>
