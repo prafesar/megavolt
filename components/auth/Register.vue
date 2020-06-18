@@ -74,7 +74,7 @@ export default {
         Auth.createUserWithEmailAndPassword(this.email, this.password)
           .then((created) => {
             created.user.sendEmailVerification().then(() => {
-              this.$router.push('/user/profile');
+              this.$router.push('/');
             });
           }).catch((error) => {
             this.errors.push(error.message);
