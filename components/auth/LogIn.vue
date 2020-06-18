@@ -64,7 +64,7 @@ export default {
       if (!this.errors.length) {
         event.target.classList.add('was-validated');
         Auth.signInWithEmailAndPassword(this.email, this.password)
-          .then(() => this.$router.push('/cables'))
+          .then(() => this.$router.push('/'))
           .catch(err => this.errors.push(err.message));
       }
     },
